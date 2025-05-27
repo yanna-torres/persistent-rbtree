@@ -79,23 +79,44 @@ class RedBlackTree:
     # function to delete a value from RB Tree
     def delete(self, value):
         node_to_remove = self.search(value)
-
         if node_to_remove is None:
             return
 
-        if node_to_remove.left is None or node_to_remove.right is None:
-            self._replace_node(
-                node_to_remove, node_to_remove.left or node_to_remove.right
-            )
-        else:
-            successor = self._find_min(node_to_remove.right)
-            node_to_remove.value = successor.value
-            self._replace_node(successor, successor.right)
+        y = node_to_remove
+        y_original_color = y.color
 
-        self.delete_fix(node_to_remove)
+        if node_to_remove.left is None:
+            x = node_to_remove.right
+            self._replace_node(node_to_remove, node_to_remove.right)
+        elif node_to_remove.right is None:
+            x = node_to_remove.left
+            self._replace_node(node_to_remove, node_to_remove.left)
+        else:
+            y = self._find_min(node_to_remove.right)
+            y_original_color = y.color
+            x = y.right
+            if y.parent == node_to_remove:
+                if x:
+                    x.parent = y
+            else:
+                self._replace_node(y, y.right)
+                y.right = node_to_remove.right
+                if y.right:
+                    y.right.parent = y
+            self._replace_node(node_to_remove, y)
+            y.left = node_to_remove.left
+            if y.left:
+                y.left.parent = y
+            y.color = node_to_remove.color
+
+        if y_original_color == "black":
+            self.delete_fix(x)
+
 
     # function to fix RB Tree properties after deletion
     def delete_fix(self, x):
+        if x is None:
+            return
         while x != self.root and x.color == "black":
             if x == x.parent.left:
                 sibling = x.sibling()
