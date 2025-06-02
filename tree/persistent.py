@@ -37,27 +37,35 @@ class PersistentRedBlackTree:
             else:
                 node = node.right
 
+        print(f"SUC {x} {version}")
+        print(succ.value if succ else float("inf"))
+        print("")
         return succ.value if succ else float("inf")
 
     def print_version(self, version):
-      if version > self.current_version:
-          version = self.current_version
+        if version > self.current_version:
+            version = self.current_version
 
-      root = self.versions[version]
-      lines = []
+        root = self.versions[version]
+        lines = []
 
-      def _display(node, prefix="", is_left=True):
-          if node is not None:
-              color = "R" if node.color == "red" else "N"
-              lines.append(f"{prefix}{'└── ' if is_left else '┌── '}{node.value}({color})")
-              if node.left or node.right:
-                  if node.right:
-                      _display(node.right, prefix + ("    " if is_left else "│   "), False)
-                  if node.left:
-                      _display(node.left, prefix + ("    " if is_left else "│   "), True)
-          else:
-              lines.append(f"{prefix}{'└── ' if is_left else '┌── '}None")
+        def _display(node, prefix="", is_left=True):
+            if node is not None:
+                color = "R" if node.color == "red" else "N"
+                lines.append(
+                    f"{prefix}{'└── ' if is_left else '┌── '}{node.value}({color})"
+                )
+                if node.left or node.right:
+                    if node.right:
+                        _display(
+                            node.right, prefix + ("    " if is_left else "│   "), False
+                        )
+                    if node.left:
+                        _display(
+                            node.left, prefix + ("    " if is_left else "│   "), True
+                        )
+            else:
+                lines.append(f"{prefix}{'└── ' if is_left else '┌── '}None")
 
-      _display(root)
-      return "\n".join(lines)
-
+        _display(root)
+        return "\n".join(lines)
