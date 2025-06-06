@@ -1,5 +1,11 @@
 # Árvore Rubro-negra Persistente
 
+Este projeto é uma aplicação desenvolvida como parte de um trabalho da cadeira de Estrutura de Dados do Programa de Pós-Graduação em Ciências da Computação da Universidade Federal do Ceará. O objetivo é implementar e testar uma árvore rubro-negra persistente, permitindo operações como inserção, remoção, sucessor e impressão de diferentes versões da estrutura, por meio de comandos lidos a partir de um arquivo de texto.
+
+> Feito por:
+> Kiara Beatriz Viana Duarte (584248) e Yanna Torres Gonçalves (587299)
+
+
 - [Árvore Rubro-negra Persistente](#árvore-rubro-negra-persistente)
   - [Requisitos](#requisitos)
   - [Como rodar?](#como-rodar)
