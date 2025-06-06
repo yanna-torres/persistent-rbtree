@@ -543,3 +543,54 @@ def uncle(self):
         if self.parent is None:
             return None
         return self.parent.sibling()
+
+
+
+
+Valores da árvore e impressão de versões:
+Nessa parte do código colocamos os valores para inserir e remover e imprimimos suas respectivas versões
+
+Importa a árvore:
+-Inicializa a árvore persistente
+-Insere 10, 20, 30, 40, 50 e 25
+-Remove 10 e 20
+-Cada operação cria uma nova versão
+-Imprime versão 1 a 7
+
+Código:
+from tree.persistent import PersistentRedBlackTree
+
+if __name__ == "__main__":
+    tree = PersistentRedBlackTree()
+
+    tree.insert(10)  # versão 1
+    tree.insert(20)  # versão 2
+    tree.delete(10)  # versão 3 (deletando 10)
+    tree.insert(30)  # versão 3
+    tree.insert(40)  # versão 4
+    tree.insert(50)  # versão 5
+    tree.insert(25)  # versão 6
+
+    print("Versão 1 (após incluir 10):")
+    print(" ".join(tree.print_version(1)))
+
+    print("Versão 2 (após incluir 20):")
+    print(" ".join(tree.print_version(2)))
+
+    print("Versão 3 (após deletar 10 e incluir 30):")
+    print(" ".join(tree.print_version(3)))
+
+    print("Versão 6:")
+    print(" ".join(tree.print_version(6)))
+
+    tree.delete(20)  # versão 7
+
+    print("\nVersão 7 (após deletar 20):")
+    print(" ".join(tree.print_version(7)))
+
+    print("\nVersão 2 (antes de deletar 20):")
+    print(" ".join(tree.print_version(2)))
+
+    tree.successor(25, 6)
+
+    tree.successor(50, 7)
