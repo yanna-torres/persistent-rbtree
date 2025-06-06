@@ -3,7 +3,6 @@
 ## Requisitos
 
 - Python 3.x
-- Bibliotecas presentes em `requirements.txt`
 
 ## Como rodar?
 

@@ -1,5 +1,4 @@
 from copy import deepcopy
-
 from tree.red_black_tree import RedBlackTree
 
 
@@ -11,7 +10,6 @@ class PersistentRedBlackTree:
         self.versions[0] = None
 
     def insert(self, value):
-        # Deep copy the tree from current root
         self.tree.root = deepcopy(self.versions[self.current_version])
         self.tree.insert(value)
         self.current_version += 1
@@ -37,9 +35,6 @@ class PersistentRedBlackTree:
             else:
                 node = node.right
 
-        print(f"SUC {x} {version}")
-        print(succ.value if succ else float("inf"))
-        print("")
         return succ.value if succ else float("inf")
 
     def print_version(self, version):
@@ -47,25 +42,14 @@ class PersistentRedBlackTree:
             version = self.current_version
 
         root = self.versions[version]
-        lines = []
+        result = []
 
-        def _display(node, prefix="", is_left=True):
-            if node is not None:
+        def in_order(node, depth=0):
+            if node:
+                in_order(node.left, depth + 1)
                 color = "R" if node.color == "red" else "N"
-                lines.append(
-                    f"{prefix}{'└── ' if is_left else '┌── '}{node.value}({color})"
-                )
-                if node.left or node.right:
-                    if node.right:
-                        _display(
-                            node.right, prefix + ("    " if is_left else "│   "), False
-                        )
-                    if node.left:
-                        _display(
-                            node.left, prefix + ("    " if is_left else "│   "), True
-                        )
-            else:
-                lines.append(f"{prefix}{'└── ' if is_left else '┌── '}None")
+                result.append(f"{node.value},{depth},{color}")
+                in_order(node.right, depth + 1)
 
-        _display(root)
-        return "\n".join(lines)
+        in_order(root)
+        return result
