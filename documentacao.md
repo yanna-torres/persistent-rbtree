@@ -1,68 +1,42 @@
-# Árvore Rubro-negra Persistente
+# Documentação
 
-- [Árvore Rubro-negra Persistente](#árvore-rubro-negra-persistente)
-  - [Requisitos](#requisitos)
-  - [Como rodar?](#como-rodar)
-  - [Documentação](#documentação)
-    - [Nó (node):](#nó-node)
-      - [Estrutura do Nó](#estrutura-do-nó)
-      - [Métodos auxiliares para navegação na árvore](#métodos-auxiliares-para-navegação-na-árvore)
-        - [Avô (`grandparent`)](#avô-grandparent)
-        - [Irmão (`sibling`)](#irmão-sibling)
+- [Documentação](#documentação)
+  - [Nó (node):](#nó-node)
+    - [Estrutura do Nó](#estrutura-do-nó)
+    - [Métodos auxiliares para navegação na árvore](#métodos-auxiliares-para-navegação-na-árvore)
+      - [Avô (`grandparent`)](#avô-grandparent)
+      - [Irmão (`sibling`)](#irmão-sibling)
       - [Tio (`uncle`)](#tio-uncle)
-    - [Árvore Rubro negra (red\_black\_tree):](#árvore-rubro-negra-red_black_tree)
-      - [Estrutura da Árvore](#estrutura-da-árvore)
-      - [Busca (`search`)](#busca-search)
-      - [Inserção (`insert`)](#inserção-insert)
-      - [Correção após inserção (`insert_fix`)](#correção-após-inserção-insert_fix)
-      - [Remoção (`delete`)](#remoção-delete)
-      - [Correção após remoção (`delete_fix`)](#correção-após-remoção-delete_fix)
-      - [Rotação à esquerda (`rotate_left`)](#rotação-à-esquerda-rotate_left)
-      - [Rotação à direita (`rotate_right`)](#rotação-à-direita-rotate_right)
-      - [Funções Auxiliares](#funções-auxiliares)
-        - [Substituição de nó (`_replace_node`)](#substituição-de-nó-_replace_node)
-        - [Busca do mínimo (`_find_min`)](#busca-do-mínimo-_find_min)
-    - [Persistência (persistent):](#persistência-persistent)
-      - [Estrutura da Árvore Persistente](#estrutura-da-árvore-persistente)
-      - [Inserção (`insert`)](#inserção-insert-1)
-      - [Remoção (`delete`)](#remoção-delete-1)
-      - [Sucessor de um valor em uma versão (`successor`)](#sucessor-de-um-valor-em-uma-versão-successor)
-      - [Impressão da Árvore em uma versão (`print_version`)](#impressão-da-árvore-em-uma-versão-print_version)
-    - [Aplicação (`app.py`)](#aplicação-apppy)
-      - [Função `decode_input`](#função-decode_input)
-      - [Execução principal](#execução-principal)
-  - [Fontes](#fontes)
+  - [Árvore Rubro negra (red\_black\_tree):](#árvore-rubro-negra-red_black_tree)
+    - [Estrutura da Árvore](#estrutura-da-árvore)
+    - [Busca (`search`)](#busca-search)
+    - [Inserção (`insert`)](#inserção-insert)
+    - [Correção após inserção (`insert_fix`)](#correção-após-inserção-insert_fix)
+    - [Remoção (`delete`)](#remoção-delete)
+    - [Correção após remoção (`delete_fix`)](#correção-após-remoção-delete_fix)
+    - [Rotação à esquerda (`rotate_left`)](#rotação-à-esquerda-rotate_left)
+    - [Rotação à direita (`rotate_right`)](#rotação-à-direita-rotate_right)
+    - [Funções Auxiliares](#funções-auxiliares)
+      - [Substituição de nó (`_replace_node`)](#substituição-de-nó-_replace_node)
+      - [Busca do mínimo (`_find_min`)](#busca-do-mínimo-_find_min)
+  - [Persistência (persistent):](#persistência-persistent)
+    - [Estrutura da Árvore Persistente](#estrutura-da-árvore-persistente)
+    - [Inserção (`insert`)](#inserção-insert-1)
+    - [Remoção (`delete`)](#remoção-delete-1)
+    - [Sucessor de um valor em uma versão (`successor`)](#sucessor-de-um-valor-em-uma-versão-successor)
+    - [Impressão da Árvore em uma versão (`print_version`)](#impressão-da-árvore-em-uma-versão-print_version)
+  - [Aplicação (`app.py`)](#aplicação-apppy)
+    - [Função `decode_input`](#função-decode_input)
+    - [Execução principal](#execução-principal)
 
 
-## Requisitos
-
-- Python 3.x
-
-## Como rodar?
-
-1. Clone o repositório
-    ```bash
-    git clone https://github.com/yanna-torres/persistent-rbtree.git
-    ```
-2. Acesse a pasta do projeto
-    ```bash
-    cd persistent-rbtree
-    ```
-3. Crie um arquivo de texto com os comandos desejados (por exemplo: `commands.txt`). Você pode acessar a documentação da entrada em [Aplicação (`app.py`)](#aplicação-apppy) e um exemplo pode ser encontrado em [commands.txt](commands.txt).
-4. Rode a aplicação
-    ```bash
-    python app.py commands.txt
-    ```
-
-## Documentação
-
-### Nó (node):
+## Nó (node):
 
 > Arquivo: [tree/node.py](tree/node.py)
 
 Este arquivo define a classe do nó para a árvore rubro-negra, implementando as regras e propriedades básicas dessa estrutura.
 
-#### Estrutura do Nó
+### Estrutura do Nó
 
 A classe `RBNode` representa um nó da árvore rubro-negra, com os seguintes atributos:
 - Armazena valor do nó (`value`)
@@ -81,9 +55,9 @@ class RBNode:
         self.parent = None
 ```
 
-#### Métodos auxiliares para navegação na árvore
+### Métodos auxiliares para navegação na árvore
 
-##### Avô (`grandparent`)
+#### Avô (`grandparent`)
 
 Retorna o avô do nó, caso exista; caso contrário, retorna `None`.
 
@@ -94,7 +68,7 @@ def grandparent(self):
     return self.parent.parent
 ```
 
-##### Irmão (`sibling`)
+#### Irmão (`sibling`)
 
 Retorna o irmão do nó (outro filho do mesmo pai), caso exista; caso contrário, retorna `None`.
 
@@ -121,13 +95,13 @@ def uncle(self):
 ---
 
 
-### Árvore Rubro negra (red_black_tree):
+## Árvore Rubro negra (red_black_tree):
 
 > Arquivo: [tree/red_black_tree.py](tree/red_black_tree.py)
 
 Este arquivo implementa uma árvore rubro-negra com operações básicas: busca, inserção, remoção e rotações.
 
-#### Estrutura da Árvore
+### Estrutura da Árvore
 
 A classe `RedBlackTree` representa a árvore rubro-negra e possui apenas a referência da raiz (`root`), que inicialmente é `None`.
 
@@ -137,7 +111,7 @@ class RedBlackTree:
         self.root = None
 ```
 
-#### Busca (`search`)
+### Busca (`search`)
 
 Retorna o nó que contém o valor buscado, iniciando pela raiz da árvore. Caso o valor não seja encontrado, retorna `None`.
 
@@ -154,7 +128,7 @@ def search(self, value):
     return None
 ```
 
-#### Inserção (`insert`)
+### Inserção (`insert`)
 
 Insere um novo nó com o valor dado na árvore.
 
@@ -187,7 +161,7 @@ def insert(self, value):
     self.insert_fix(new_node)
 ```
 
-#### Correção após inserção (`insert_fix`)
+### Correção após inserção (`insert_fix`)
 
 Corrige possíveis violações das propriedades rubro-negras após inserir um nó vermelho.
 
@@ -229,7 +203,7 @@ def insert_fix(self, new_node):
     self.root.color = "black"
 ```
 
-#### Remoção (`delete`)
+### Remoção (`delete`)
 
 Remove um nó com um determinado valor da árvore. 
 
@@ -275,7 +249,7 @@ def delete(self, value):
         self.delete_fix(x)
 ```
 
-#### Correção após remoção (`delete_fix`)
+### Correção após remoção (`delete_fix`)
 
 Corrige possíveis violações após remoção.
 
@@ -339,7 +313,7 @@ def delete_fix(self, x):
     x.color = "black"
 ```
 
-#### Rotação à esquerda (`rotate_left`)
+### Rotação à esquerda (`rotate_left`)
 
 Rotaciona para a esquerda a partir de um nó.
 
@@ -370,7 +344,7 @@ def rotate_left(self, node):
     node.parent = right_child
 ```
 
-#### Rotação à direita (`rotate_right`)
+### Rotação à direita (`rotate_right`)
 
 Rotaciona para a direita a partir de um nó.
 
@@ -401,9 +375,9 @@ def rotate_right(self, node):
     node.parent = left_child
 ```
 
-#### Funções Auxiliares
+### Funções Auxiliares
 
-##### Substituição de nó (`_replace_node`)
+#### Substituição de nó (`_replace_node`)
 
 Substitui um nó antigo por um novo, atualizando os ponteiros do pai e da raiz conforme necessário.
 
@@ -421,7 +395,7 @@ def _replace_node(self, old_node, new_node):
 ```
 
 
-##### Busca do mínimo (`_find_min`)
+#### Busca do mínimo (`_find_min`)
 
 Encontra o nó com o menor valor em uma subárvore, indo sempre para o filho esquerdo até o final.
 
@@ -435,7 +409,7 @@ def _find_min(self, node):
 ---
 
 
-### Persistência (persistent): 
+## Persistência (persistent): 
 
 
 > Arquivo: [tree/persistent.py](tree/persistent.py)
@@ -443,7 +417,7 @@ def _find_min(self, node):
 
 Este arquivo implementa uma árvore rubro-negra persistente parcialmente, que mantém versões imutáveis da árvore após operações de inserção e remoção. Utiliza cópias profundas para garantir que versões anteriores permaneçam intactas.
 
-#### Estrutura da Árvore Persistente
+### Estrutura da Árvore Persistente
 
 A classe `PersistentRedBlackTree` mantém um vetor fixo para armazenar até 100 versões da árvore, usando uma instância da `RedBlackTree` para manipular cada versão. A classe possui os seguintes atributos:
 - Um vetor de versões (`versions`) de tamanho 100, para armazenar as referências de cada versão
@@ -459,7 +433,7 @@ class PersistentRedBlackTree:
         self.versions[0] = None
 ```
 
-#### Inserção (`insert`)
+### Inserção (`insert`)
 
 Insere um valor criando uma nova versão da árvore.
 
@@ -475,7 +449,7 @@ def insert(self, value):
     self.versions[self.current_version] = self.tree.root
 ```
 
-#### Remoção (`delete`)
+### Remoção (`delete`)
 
 Remove um valor criando uma nova versão da árvore.
 
@@ -491,7 +465,7 @@ def delete(self, value):
     self.versions[self.current_version] = self.tree.root
 ```
 
-#### Sucessor de um valor em uma versão (`successor`)
+### Sucessor de um valor em uma versão (`successor`)
 
 Retorna o sucessor do valor `x` na versão especificada da árvore.
 
@@ -517,7 +491,7 @@ def successor(self, x, version):
     return succ.value if succ else float("inf")
 ```
 
-#### Impressão da Árvore em uma versão (`print_version`)
+### Impressão da Árvore em uma versão (`print_version`)
 
 Retorna uma lista com a travessia em ordem da árvore da versão especificada, com informações de valor, profundidade e cor do nó.
 
@@ -547,13 +521,13 @@ def print_version(self, version):
 
 ---
 
-### Aplicação (`app.py`)
+## Aplicação (`app.py`)
 
 > Arquivo: [app.py](app.py)
 
 Este arquivo implementa o programa principal para manipular uma árvore rubro-negra persistente por meio de comandos de um arquivo de entrada, gerando resultados em um arquivo de saída.
 
-#### Função `decode_input`
+### Função `decode_input`
 
 Lê um arquivo de entrada com comandos e executa operações na árvore persistente, armazenando os resultados em um arquivo de saída.
 
@@ -606,7 +580,7 @@ def decode_input(input_filename, output_filename, tree):
         out_file.write("\n".join(output_lines))
 ```
 
-#### Execução principal
+### Execução principal
 
 - Recebe o nome do arquivo de entrada via linha de comando.
 - Inicializa a árvore persistente.
@@ -624,8 +598,3 @@ if __name__ == "__main__":
     tree = PersistentRedBlackTree()
     decode_input(input_filename, output_filename, tree)
 ```
-
-## Fontes
-
-> Driscoll, J.R., Sarnak, N., Sleator, D.D. and Tarjan, R.E., 1986, November. **Making data structures persistent**. In *Proceedings of the eighteenth annual ACM symposium on Theory of computing* (pp. 109-121).
-

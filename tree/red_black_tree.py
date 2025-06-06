@@ -225,10 +225,3 @@ class RedBlackTree:
         while node.left is not None:
             node = node.left
         return node
-
-    # function to perform inorder traversal
-    def _inorder_traversal(self, node):
-        if node is not None:
-            self._inorder_traversal(node.left)
-            print(node.value, end=" ")
-            self._inorder_traversal(node.right)
