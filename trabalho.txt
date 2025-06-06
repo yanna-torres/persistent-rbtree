@@ -1,0 +1,237 @@
+(ainda n tá pronto)
+Árvore Rubro negra:
+Essa parte do código Implementa a árvore rubro negra e suas operações (busca, inserção, remoção, máximo e mínimo.)
+
+Implementa árvore rubro negra:
+-Cria classe RedBlackTree
+-Cria raiz da árvore que começa vazia
+
+Código:
+class RedBlackTree:
+    def __init__(self):
+        self.root = None
+
+
+Operação de busca:
+-Define busca "search" que recebe valor "value".
+-Busca a partir da raiz da árvore.
+-Enquanto o nó atual não for nulo: 
+    -se o valor for igual ao valor do nó atual, retornar nó atual
+    -se o valor não for igual e se for menor que o valor do nó atual, continuar busca para esquerda
+    -senão, continuar para direita
+-Retorna nulo caso não encontre o valor
+
+Código:
+def search(self, value): 
+        curr_node = self.root
+        while curr_node is not None:
+            if value == curr_node.value:
+                return curr_node
+            elif value < curr_node.value:
+                curr_node = curr_node.left
+            else:
+                curr_node = curr_node.right
+        return None
+    
+
+Operação de inserção:
+-Define função "insert" que insere valor "value".
+-Cria novo nó.
+-Se a árvore estiver vazia, o novo nó se torna a raiz da árvore
+-Senão, percorrer árvore a partir da raiz com o laço "while true", até encontrar o lugar do novo nó
+    -se o valor for menor que o valor do nó atual, nó tem que ir para a esquerda
+        se o filho esquerdo estiver vazio, o novo nó é inserido ali e define o pai
+        senão, continuar descendo para esquerda
+    -senão (se o valor for igual ou maior que o valor do nó atual), vai para a direita
+        se filho direito estiver vazio, o novo nó é inserido ali e define o pai 
+        senão, continua descendo para a direita
+-Chama função para corrigir a árvore
+
+Código:
+def insert(self, value):
+        new_node = RBNode(value)
+        if self.root is None:
+            self.root = new_node
+        else:
+            curr_node = self.root
+            while True:
+                if value < curr_node.value:
+                    if curr_node.left is None:
+                        curr_node.left = new_node
+                        new_node.parent = curr_node
+                        break
+                    else:
+                        curr_node = curr_node.left
+                else:
+                    if curr_node.right is None:
+                        curr_node.right = new_node
+                        new_node.parent = curr_node
+                        break
+                    else:
+                        curr_node = curr_node.right
+        self.insert_fix(new_node)
+
+
+Corrigir a árvore depois da inserção:
+-Define função "insert_fix" que corrige nó "new_node"
+-Percorre o laço enquanto nó pai e novo nó forem vermelhos (filhos de nós vermelhos têm que ser pretos)
+    -Se pai do novo nó estiver a esquerda de nó avô, filho direito do nó avô é tio do novo nó
+        -Se tio existir e for vermelho, pai e tio do novo nó passarão a ser pretos, avô será vermelho (para manter o número de nós pretos) e a verificação passa para o avô.
+        -Senão (tio é nulo ou preto)
+            se novo nó estiver à direita de nó pai, fazer rotação para ficar à esquerda do pai (para ficar em linha reta)
+            com tudo alinhado, pai vira preto, avô vira vermelho e faz rotação para a direita
+    -Senão (um espelho do caso anterior: pai à direira e tio à esquerda)
+        -Se tio for vermelho, pai e tio viram pretos, avô vira vermelho e a verificação sobe para o avô
+        -Senão
+            se novo nó estiver à esquerda, fazer rotação para direita
+            pai vira preto, avô vira vermelho e faz rotação para a esquerda
+-Sai do laço e garante a raiz preta
+
+Código:
+def insert_fix(self, new_node):
+        while new_node.parent and new_node.parent.color == "red":
+            if new_node.parent == new_node.grandparent().left:
+                uncle = new_node.uncle()
+                if uncle and uncle.color == "red":
+                    new_node.parent.color = "black"
+                    uncle.color = "black"
+                    new_node.grandparent().color = "red"
+                    new_node = new_node.grandparent()
+                else:
+                    if new_node == new_node.parent.right:
+                        new_node = new_node.parent
+                        self.rotate_left(new_node)
+                    new_node.parent.color = "black"
+                    new_node.grandparent().color = "red"
+                    self.rotate_right(new_node.grandparent())
+            else:
+                uncle = new_node.uncle()
+                if uncle and uncle.color == "red":
+                    new_node.parent.color = "black"
+                    uncle.color = "black"
+                    new_node.grandparent().color = "red"
+                    new_node = new_node.grandparent()
+                else:
+                    if new_node == new_node.parent.left:
+                        new_node = new_node.parent
+                        self.rotate_right(new_node)
+                    new_node.parent.color = "black"
+                    new_node.grandparent().color = "red"
+                    self.rotate_left(new_node.grandparent())
+        self.root.color = "black"
+
+
+Operação de Remoção:
+-Define função "delete" que remove valor "value"
+-Usa fução de busca para encontrar o valor do nó que será removido
+    -Se não encontrar nada, retornar
+-y é o nó que será removido
+-Guarda a cor original de y (para não violar as regras da árvore)
+-Se o nó que será removido não tiver filho a sua esquerda, armazenar filho direito e substuir nó por filho direito
+-Senão, se o nó que será removido não tiver filho a sua direita, armazenar filho esquerdo e substituir nó por filho direito
+-Senão (nó com filho direito e esquero), encontar sucessor y de nó que será removido (o menor nó da subárvore direita)
+-Guarda cor original do sucessor 
+-Torna x o filho direito do sucessor e vai assumir a antiga posição do y 
+    -se pai de y for o nó que será removido, ele já está na posição correta
+        -se x existir, tornar x filho de y
+    -senão (y está mais em baixo na árvore), filho de y sobe para o lugar de y e ponteiro de y é ajustado
+    -y substitui nó a ser removido e pai de nó a ser removido passa a apontar para y
+    -y herda filho esquerdo de nó a ser removido
+    -se filho esquerdo existe, ponteiro "parent" de filho esquerdo aponta para y
+    -y herda cor de nó a ser removido
+-Se o nó removido era preto, chamar função para corrigir a árvore
+
+Código:
+def delete(self, value):
+        node_to_remove = self.search(value)
+        if node_to_remove is None:
+            return
+
+        y = node_to_remove
+        y_original_color = y.color
+
+        if node_to_remove.left is None:
+            x = node_to_remove.right
+            self._replace_node(node_to_remove, node_to_remove.right)
+        elif node_to_remove.right is None:
+            x = node_to_remove.left
+            self._replace_node(node_to_remove, node_to_remove.left)
+        else:
+            y = self._find_min(node_to_remove.right)
+            y_original_color = y.color
+            x = y.right
+            if y.parent == node_to_remove:
+                if x:
+                    x.parent = y
+            else:
+                self._replace_node(y, y.right)
+                y.right = node_to_remove.right
+                if y.right:
+                    y.right.parent = y
+            self._replace_node(node_to_remove, y)
+            y.left = node_to_remove.left
+            if y.left:
+                y.left.parent = y
+            y.color = node_to_remove.color
+
+        if y_original_color == "black":
+            self.delete_fix(x)
+
+
+Corrigir a árvore após remoção:
+-Definir função "delete_x" que corrige nó x
+-Se x for nulo, retornar
+-
+def delete_fix(self, x):
+        if x is None:
+            return
+        while x != self.root and x.color == "black":
+            if x == x.parent.left:
+                sibling = x.sibling()
+                if sibling.color == "red":
+                    sibling.color = "black"
+                    x.parent.color = "red"
+                    self.rotate_left(x.parent)
+                    sibling = x.sibling()
+                if (sibling.left is None or sibling.left.color == "black") and (
+                    sibling.right is None or sibling.right.color == "black"
+                ):
+                    sibling.color = "red"
+                    x = x.parent
+                else:
+                    if sibling.right is None or sibling.right.color == "black":
+                        sibling.left.color = "black"
+                        sibling.color = "red"
+                        self.rotate_right(sibling)
+                        sibling = x.sibling()
+                    sibling.color = x.parent.color
+                    x.parent.color = "black"
+                    if sibling.right:
+                        sibling.right.color = "black"
+                    self.rotate_left(x.parent)
+                    x = self.root
+            else:
+                sibling = x.sibling()
+                if sibling.color == "red":
+                    sibling.color = "black"
+                    x.parent.color = "red"
+                    self.rotate_right(x.parent)
+                    sibling = x.sibling()
+                if (sibling.left is None or sibling.left.color == "black") and (
+                    sibling.right is None or sibling.right.color == "black"
+                ):
+                    sibling.color = "red"
+                    x = x.parent
+                else:
+                    if sibling.left is None or sibling.left.color == "black":
+                        sibling.right.color = "black"
+                        sibling.color = "red"
+                        self.rotate_left(sibling)
+                        sibling = x.sibling()
+                    sibling.color = x.parent.color
+                    x.parent.color = "black"
+                    if sibling.left:
+                        sibling.left.color = "black"
+                    self.rotate_right(x.parent)
+                    x = self.root
+        x.color = "black"
